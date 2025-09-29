@@ -16,11 +16,12 @@ app.get("/saldo", async (req, res) => {
     const resp = await fetch("https://hook.us2.make.com/klh1dudrowd9kt5s6pnkhezjcwlpdfi8");
     const data = await resp.json();
 
-    res.json({
-      ingresos: data[6] || 0,
-      gastos: data[7] || 0,
-      saldo: data[8] || 0
-    });
+const ingresos = parseInt(data["7"] || 0, 10); // <- lee la clave "7" del JSON
+const gastos = parseInt(data["8"] || 0, 10);   // <- si existe la clave 8
+const saldo = ingresos - gastos;
+
+res.json({ ingresos, gastos, saldo });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
